@@ -1,0 +1,24 @@
+managment:
+  endpionts:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  application:
+    name: CrudService
+spring:
+  profiles:
+    active: dev
+  jpa:
+    properties:
+      hibernate:
+        dialect : org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+      dll-auto: update
+
+
+# Hibernate ddl auto (create, create-drop, validate, update)

@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:altine
+    ports:
+      - "5423:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTHRES_DB: shop
