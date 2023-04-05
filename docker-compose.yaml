@@ -1,0 +1,10 @@
+version: '3.8'
+#harbor.avalaunch.aval/docker-hub-proxy/library/postgres:14.2
+services:
+  postgres:
+    image: harbor.avalaunch.aval/docker-hub-proxy/library/postgres:14.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin

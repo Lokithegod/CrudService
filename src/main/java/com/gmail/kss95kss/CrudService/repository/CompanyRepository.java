@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
-    List<Car> findByPublished(boolean published) ;
+    List<Car> findByName(String name) ;
 
-    List<Car> findByCarsName(String name) ;
 }

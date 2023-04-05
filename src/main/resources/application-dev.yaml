@@ -1,8 +1,11 @@
 spring:
   datasource:
-    username: postgres
-    password: password
-    url: jdbc:postgresql://localhost:5423/shop
+    username: admin
+    password: admin
+    url: jdbc:postgresql://localhost:5432/postgres
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 sql:
   init:
     mode: always

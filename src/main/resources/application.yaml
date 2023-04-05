@@ -12,13 +12,15 @@ spring:
   profiles:
     active: dev
   jpa:
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         dialect : org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           lob:
             non_contextual_creation: true
-      dll-auto: update
+    show-sql: true
 
 
 # Hibernate ddl auto (create, create-drop, validate, update)

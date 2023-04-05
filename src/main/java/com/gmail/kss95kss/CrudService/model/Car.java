@@ -1,16 +1,19 @@
 package com.gmail.kss95kss.CrudService.model;
 
 
+import lombok.ToString;
+
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
+@ToString
 @Table(name = "car")
 public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
+
     @Column(name = "name")
     private String name;
 
@@ -21,7 +24,7 @@ public class Car {
     private String model;
 
     @Column(name = "year")
-    private Date year;
+    private int year;
 
     @Column(name = "mileage")
     private int mileage;
@@ -32,12 +35,13 @@ public class Car {
     @Column(name = "equipment")
     private String equipment;
 
-    @Column(name = "company")
-    private int company;
-
     @Column(name = "about")
     private String about;
 
     @Column(name = "rating")
+
     private Double rating;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private Company companyEntity;
 }
