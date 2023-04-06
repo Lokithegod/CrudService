@@ -9,7 +9,7 @@ import java.util.List;
 public interface CarService {
 
     List<Car> findAllCar ();
-    List<Car> findCarsByYear (int year);
+    List<Car> findCarsByYear (String year);
     List<Car> findCarsByCompanyName (String name);
     void addNewCar (Car car);
 }

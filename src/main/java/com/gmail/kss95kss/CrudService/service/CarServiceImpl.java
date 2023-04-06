@@ -24,7 +24,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findCarsByYear(int year) {
+    public List<Car> findCarsByYear(String year) {
         var cars = carRepository.findByYear(year);
         return cars;
     }

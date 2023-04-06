@@ -32,7 +32,7 @@ public class Car {
     private String model;
 
     @Column(name = "year")
-    private int year;
+    private String year;
 
     @Column(name = "mileage")
     private int mileage;

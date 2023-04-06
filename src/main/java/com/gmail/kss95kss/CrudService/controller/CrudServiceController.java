@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -23,11 +24,11 @@ public class CrudServiceController {
 
     @GetMapping("/allCars/{year}")
     public List<Car> getAllCarsByYear(@PathVariable String year) {
-        var response = carService.findCarsByYear(Integer.parseInt(year));
+        var response = carService.findCarsByYear(year);
         return response;
     }
 
-    @GetMapping("/allCars/{company}")
+    @GetMapping("/allCars/{companyName}")
     public List<Car> getAllCarsInCompany(@PathVariable String companyName) {
         var response = carService.findCarsByCompanyName(companyName);
         return response;

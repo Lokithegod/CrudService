@@ -11,7 +11,7 @@ create table car
     price             int4,
     rating            float8,
     type              varchar(255),
-    year              int4,
+    year              varchar(255),
     company_entity_id int4,
     primary key (id)
 );
