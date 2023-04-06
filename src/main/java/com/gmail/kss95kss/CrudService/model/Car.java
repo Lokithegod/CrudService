@@ -1,13 +1,21 @@
 package com.gmail.kss95kss.CrudService.model;
 
 
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @ToString
 @Table(name = "car")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@DynamicUpdate
 public class Car {
 
     @Id
@@ -39,9 +47,10 @@ public class Car {
     private String about;
 
     @Column(name = "rating")
-
     private Double rating;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JsonIgnore
     private Company companyEntity;
 }

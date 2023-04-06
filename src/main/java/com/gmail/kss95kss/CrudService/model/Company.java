@@ -1,7 +1,7 @@
 package com.gmail.kss95kss.CrudService.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -13,12 +13,17 @@ import java.util.List;
 
 @Entity
 @Table(name = "company")
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@DynamicUpdate
 public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private int id;
 
     @Column(name = "name")
