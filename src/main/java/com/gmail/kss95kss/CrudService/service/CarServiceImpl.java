@@ -36,18 +36,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void addNewCar(String name, String type, String model, int year, int mileage, int price, String equipment, String about, Double rating) {
-        Car newCar = Car.builder()
-                .name(name)
-                .type(type)
-                .model(model)
-                .year(year)
-                .mileage(mileage)
-                .price(price)
-                .equipment(equipment)
-                .about(about)
-                .rating(rating)
-                .build();
-        carRepository.save(newCar);
+    public void addNewCar(Car car) {
+        carRepository.save(car);
     }
 }

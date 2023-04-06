@@ -33,9 +33,9 @@ public class CrudServiceController {
         return response;
     }
 
-   // @PostMapping("/saveCar/{}/{}/{}/{}/{}/{}/{}/{}")
-    public HttpStatus saveCar() {
-        //var response = carService.addNewCar();
+    @PostMapping("/saveCar")
+    public HttpStatus saveCar(@RequestBody Car car) {
+        carService.addNewCar(car);
         return HttpStatus.OK;
     }
 
