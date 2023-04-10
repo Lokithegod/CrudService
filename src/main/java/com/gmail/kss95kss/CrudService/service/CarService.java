@@ -11,5 +11,7 @@ public interface CarService {
     List<Car> findAllCar ();
     List<Car> findCarsByYear (String year);
     List<Car> findCarsByCompanyName (String name);
+    void deleteCarById (Integer id);
     void addNewCar (Car car);
+    Car updateCar(Integer id ,Car car);
 }

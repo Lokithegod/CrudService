@@ -29,36 +29,36 @@ alter table car
 
 
 INSERT into company (id ,name, address, about, rating)
-VALUES (nextval('hibernate_sequence'),'Auto Bazar', 'Kuiv', 'car marcet with best cars', 5.0);
+VALUES (nextval('hibernate_sequence'),'Baza', 'Kuiv', 'car market with best cars', 5.0);
 INSERT into company (id ,name, address, about, rating)
-VALUES (nextval('hibernate_sequence'),'Auto Bazar', 'Sumy', 'car marcet with best cars', 4.4);
+VALUES (nextval('hibernate_sequence'),'GoodAuto', 'Sumy', 'car market with best cars', 4.4);
 INSERT into company (id ,name, address, about, rating)
-VALUES (nextval('hibernate_sequence'),'Auto Bazar', 'Odesa', 'car marcet with best cars', 3.8);
+VALUES (nextval('hibernate_sequence'),'SuperCars', 'Odesa', 'car market with best cars', 3.8);
 INSERT into company (id ,name, address, about, rating)
-VALUES (nextval('hibernate_sequence'),'Auto Bazar', 'Kharkiv', 'car marcet with best cars', 4.0);
+VALUES (nextval('hibernate_sequence'),'copart', 'Kharkiv', 'car market with best cars', 4.0);
 
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
 VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q5', 2016, 160, 18500, 'SEL', 1, 'WAG concern', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q7', 2016, 160, 18500, 'SE', 2, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'BMW', 'crossover', 'X5', 2015, 300, 20500, 'Performance', 2, 'trash', 4.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q3', 2016, 160, 18500, 'S', 3, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Mercedes', 'sedan', 's63', 2017, 235, 32999, 'S', 3, 'Business Taxi', 4.4);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q4', 2016, 160, 18500, 'SEL', 4, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Renault', 'sedan', 'Megane2', 2008, 155, 6100, 'extreme', 4, 'Meno Regan', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q1', 2016, 160, 18500, 'SEL', 1, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Skoda', 'sedan', 'rapid', 2013, 25, 10000, 'stock', 1, 'WAG concern', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q5', 2016, 160, 18500, 'SE', 2, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Opel', 'sedan', 'astra', 2005, 258, 4000, 'stock', 2, 'trash', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q5', 2016, 160, 18500, 'SE', 3, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Peugeot', 'hatchback', '308', 2021, 15, 26000, 'SE', 3, 'French tiger', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q7', 2016, 160, 18500, 'SE', 4, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Nissan', 'crossover', 'X-Trail', 2018, 85, 22546, 'SEL', 4, 'best', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q5', 2016, 160, 18500, 'S', 1, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Volkswagen', 'crossover', 'Tuareg', 2016, 160, 36654, 'S', 1, 'WAG concern', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q8', 2016, 160, 18500, 'S', 2, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Seat', 'hatchback', 'LEON', 2019, 58, 26000, 'S', 2, 'WAG concern', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q8', 2016, 160, 18500, 'SL', 4, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Volvo', 'crossover', 'Q8', 2016, 160, 18500, 'SL', 4, 'WAG concern', 5.0);
 INSERT into car (id,name, type, model, year, mileage, price, equipment, company_entity_id, about, rating)
-VALUES (nextval('hibernate_sequence'),'Audi', 'crossover', 'Q5', 2016, 160, 18500, 'SEL', 4, 'WAG concern', 5.0);
+VALUES (nextval('hibernate_sequence'),'Honda', 'crossover', 'HCR', 2016, 160, 18500, 'SEL', 4, 'WAG concern', 5.0);
 
