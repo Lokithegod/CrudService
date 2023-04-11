@@ -21,6 +21,11 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-
-
+logging:
+  log4j2:
+    logger:
+      org:
+        hibername: info
+    config:
+      override:
 # Hibernate ddl auto (create, create-drop, validate, update)

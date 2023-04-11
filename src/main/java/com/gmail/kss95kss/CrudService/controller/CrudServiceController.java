@@ -45,7 +45,7 @@ public class CrudServiceController {
         return HttpStatus.OK;
     }
 
-    @PostMapping("/updateCar/{id}")
+    @PutMapping("/updateCar/{id}")
     public Car updateCar(@PathVariable Integer id, @RequestBody Car car) {
         var response = carService.updateCar(id, car);
         return response;
