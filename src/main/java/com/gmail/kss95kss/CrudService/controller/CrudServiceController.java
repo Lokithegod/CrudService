@@ -1,5 +1,7 @@
 package com.gmail.kss95kss.CrudService.controller;
 
+import com.gmail.kss95kss.CrudService.exception.DefaultClientException;
+import com.gmail.kss95kss.CrudService.exception.DuplicateVinCodeException;
 import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,18 @@ public class CrudServiceController {
 
     @PostMapping("/saveCar")
     public HttpStatus saveCar(@RequestBody Car car) {
-        carService.addNewCar(car);
-        return HttpStatus.OK;
+        try {
+            carService.addNewCar(car);
+            return HttpStatus.OK;
+        }catch (RuntimeException exception)
+        {
+            if (exception.getMessage().contains("SQL")) {
+                throw new DuplicateVinCodeException(exception.getMessage());
+            }else
+            {
+                throw new DefaultClientException(exception.getMessage());
+            }
+        }
     }
 
     @DeleteMapping("/deleteCar/{id}")
@@ -50,6 +62,4 @@ public class CrudServiceController {
         var response = carService.updateCar(id, car);
         return response;
     }
-
-
 }

@@ -49,6 +49,9 @@ public class Car {
     @Column(name = "rating")
     private Double rating;
 
+    @Column(name = "vin")
+    private String vin_code;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     @JsonIgnore
