@@ -1,7 +1,9 @@
 package com.gmail.kss95kss.CrudService.service;
 
 import com.gmail.kss95kss.CrudService.model.Car;
+import com.gmail.kss95kss.CrudService.model.Company;
 import com.gmail.kss95kss.CrudService.repository.CarRepository;
+import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class CarServiceImpl implements CarService {
 
 
     private final CarRepository carRepository;
+
+    private final CompanyRepository companyRepository;
 
     @Override
     public List<Car> findAllCar() {
@@ -65,5 +69,14 @@ public class CarServiceImpl implements CarService {
         carRepository.save(actual);
         LOG.info("Car with id:{} was updated with params {}", id, car);
         return actual;
+    }
+
+    @Override
+    public void addCarToCompany(int id, String companyName) {
+
+        var car = findCarById(id);
+        var company = companyRepository.findCompanyByName(companyName);
+        car.setCompanyEntity(company);
+        updateCar(car.getId(),car);
     }
 }

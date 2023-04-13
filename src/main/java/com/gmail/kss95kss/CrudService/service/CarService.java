@@ -1,6 +1,7 @@
 package com.gmail.kss95kss.CrudService.service;
 
 import com.gmail.kss95kss.CrudService.model.Car;
+import com.gmail.kss95kss.CrudService.model.Company;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -21,4 +22,7 @@ public interface CarService {
     void addNewCar(Car car);
 
     Car updateCar(Integer id, Car car);
+
+    void addCarToCompany (int id, String companyName);
+
 }

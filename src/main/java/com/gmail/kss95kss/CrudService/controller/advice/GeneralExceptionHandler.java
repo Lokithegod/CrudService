@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class GeneralExceptionHandler {
 
-    public static final String DEFAULT_ERROR_CODE = "4001";
+    public static final String DEFAULT_ERROR_CODE = "000001";
 
     @ExceptionHandler(value = {DuplicateVinCodeException.class})
     @ResponseStatus(HttpStatus.CONFLICT)

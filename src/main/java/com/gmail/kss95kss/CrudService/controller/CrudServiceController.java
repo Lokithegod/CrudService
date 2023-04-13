@@ -62,13 +62,17 @@ public class CrudServiceController {
         {
             return ResponseEntity.ok(new ServiceOperationResponse(ErrorResponse.builder().errorCode("409").errorMessage("Car already sold").build()));
         }
-
-
     }
 
     @PutMapping("/updateCar/{id}")
     public ResponseEntity<ServiceOperationResponse> updateCar(@PathVariable Integer id, @RequestBody Car car) {
         var updatedCar = carService.updateCar(id, car);
         return ResponseEntity.ok(new ServiceOperationResponse(List.of(updatedCar)));
+    }
+
+    @PutMapping("/setCarToCompany/")
+    public ResponseEntity<ServiceOperationResponse> setCarToCompany(@RequestParam Integer carId, @RequestParam String companyName) {
+        carService.addCarToCompany(carId,companyName);
+        return ResponseEntity.ok(new ServiceOperationResponse());
     }
 }
