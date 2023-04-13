@@ -1,11 +1,9 @@
 package com.gmail.kss95kss.CrudService.controller.advice;
 
-import com.gmail.kss95kss.CrudService.dto.ErrorResponse;
+import com.gmail.kss95kss.CrudService.controller.domain.dto.ErrorResponse;
 import com.gmail.kss95kss.CrudService.exception.DefaultClientException;
 import com.gmail.kss95kss.CrudService.exception.DuplicateVinCodeException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +21,7 @@ public class GeneralExceptionHandler {
     ErrorResponse handleDuplicateVinCodeException(DuplicateVinCodeException e) {
         var errorMessage = e.getMessage();
         LOG.warn("Incorrect VIN-CODE (Duplicate): {}", errorMessage);
-        return handleExceptionMessage(errorMessage);
+        return handleExceptionMessage("409","Incorrect VIN-CODE (Duplicate)");
     }
 
     @ExceptionHandler(value = {DefaultClientException.class})

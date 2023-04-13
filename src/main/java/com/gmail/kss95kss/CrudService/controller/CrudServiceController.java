@@ -1,11 +1,14 @@
 package com.gmail.kss95kss.CrudService.controller;
 
+import com.gmail.kss95kss.CrudService.controller.domain.dto.ErrorResponse;
+import com.gmail.kss95kss.CrudService.controller.domain.dto.ServiceOperationResponse;
 import com.gmail.kss95kss.CrudService.exception.DefaultClientException;
 import com.gmail.kss95kss.CrudService.exception.DuplicateVinCodeException;
 import com.gmail.kss95kss.CrudService.model.Car;
+import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,49 +20,55 @@ public class CrudServiceController {
     @Autowired
     CarService carService;
 
+    @Autowired
+    CompanyRepository companyRepository;
+
     @GetMapping("/allCars")
-    public List<Car> getAllCars() {
-        var response = carService.findAllCar();
-        return response;
+    public ResponseEntity<ServiceOperationResponse> getAllCars() {
+        return ResponseEntity.ok(new ServiceOperationResponse(carService.findAllCar()));
     }
 
     @GetMapping("/allCars/year/{year}")
-    public List<Car> getAllCarsByYear(@PathVariable String year) {
-        var response = carService.findCarsByYear(year);
-        return response;
+    public ResponseEntity<ServiceOperationResponse> getAllCarsByYear(@PathVariable String year) {
+        return ResponseEntity.ok(new ServiceOperationResponse(carService.findCarsByYear(year)));
     }
 
     @GetMapping("/allCars/companyName/{companyName}")
-    public List<Car> getAllCarsInCompany(@PathVariable String companyName) {
-        var response = carService.findCarsByCompanyName(companyName);
-        return response;
+    public ResponseEntity<ServiceOperationResponse> getAllCarsInCompany(@PathVariable String companyName) {
+        return ResponseEntity.ok(new ServiceOperationResponse(carService.findCarsByCompanyName(companyName)));
     }
 
     @PostMapping("/saveCar")
-    public HttpStatus saveCar(@RequestBody Car car) {
+    public ResponseEntity<ServiceOperationResponse> saveCar(@RequestBody Car car) {
         try {
             carService.addNewCar(car);
-            return HttpStatus.OK;
-        }catch (RuntimeException exception)
-        {
+            return ResponseEntity.ok(new ServiceOperationResponse(List.of(car)));
+        } catch (RuntimeException exception) {
             if (exception.getMessage().contains("SQL")) {
                 throw new DuplicateVinCodeException(exception.getMessage());
-            }else
-            {
+            } else {
                 throw new DefaultClientException(exception.getMessage());
             }
         }
     }
 
     @DeleteMapping("/deleteCar/{id}")
-    public HttpStatus deleteCar(@PathVariable Integer id) {
-        carService.deleteCarById(id);
-        return HttpStatus.OK;
+    public ResponseEntity<ServiceOperationResponse> deleteCar(@PathVariable Integer id) {
+        var car = carService.findCarById(id);
+        try {
+            carService.deleteCarById(id);
+            return ResponseEntity.ok(new ServiceOperationResponse(List.of(car)));
+        }catch(RuntimeException e)
+        {
+            return ResponseEntity.ok(new ServiceOperationResponse(ErrorResponse.builder().errorCode("409").errorMessage("Car already sold").build()));
+        }
+
+
     }
 
     @PutMapping("/updateCar/{id}")
-    public Car updateCar(@PathVariable Integer id, @RequestBody Car car) {
-        var response = carService.updateCar(id, car);
-        return response;
+    public ResponseEntity<ServiceOperationResponse> updateCar(@PathVariable Integer id, @RequestBody Car car) {
+        var updatedCar = carService.updateCar(id, car);
+        return ResponseEntity.ok(new ServiceOperationResponse(List.of(updatedCar)));
     }
 }

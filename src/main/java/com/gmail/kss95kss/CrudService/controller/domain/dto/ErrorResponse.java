@@ -1,4 +1,4 @@
-package com.gmail.kss95kss.CrudService.dto;
+package com.gmail.kss95kss.CrudService.controller.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
