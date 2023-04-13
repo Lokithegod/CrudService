@@ -24,8 +24,6 @@ public class ServiceOperationResponse {
     @JsonProperty("company")
     private Company company;
 
-    @JsonProperty("error")
-    private ErrorResponse errorResponse;
 
     public ServiceOperationResponse(List<Car> car) {
         this.car = car;
@@ -35,7 +33,4 @@ public class ServiceOperationResponse {
         this.company = company;
     }
 
-    public ServiceOperationResponse(ErrorResponse errorResponse) {
-        this.errorResponse = errorResponse;
-    }
 }

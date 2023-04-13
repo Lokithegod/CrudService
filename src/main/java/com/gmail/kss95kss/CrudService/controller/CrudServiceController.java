@@ -7,7 +7,9 @@ import com.gmail.kss95kss.CrudService.exception.DuplicateVinCodeException;
 import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.service.CarService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class CrudServiceController {
 
     @Autowired
@@ -43,25 +46,16 @@ public class CrudServiceController {
         try {
             carService.addNewCar(car);
             return ResponseEntity.ok(new ServiceOperationResponse(List.of(car)));
-        } catch (RuntimeException exception) {
-            if (exception.getMessage().contains("SQL")) {
+        } catch (DataIntegrityViolationException exception) {
                 throw new DuplicateVinCodeException(exception.getMessage());
-            } else {
-                throw new DefaultClientException(exception.getMessage());
-            }
         }
     }
 
     @DeleteMapping("/deleteCar/{id}")
     public ResponseEntity<ServiceOperationResponse> deleteCar(@PathVariable Integer id) {
         var car = carService.findCarById(id);
-        try {
             carService.deleteCarById(id);
             return ResponseEntity.ok(new ServiceOperationResponse(List.of(car)));
-        }catch(RuntimeException e)
-        {
-            return ResponseEntity.ok(new ServiceOperationResponse(ErrorResponse.builder().errorCode("409").errorMessage("Car already sold").build()));
-        }
     }
 
     @PutMapping("/updateCar/{id}")
