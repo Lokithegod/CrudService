@@ -38,7 +38,7 @@ public class Company {
     @Column(name = "rating")
     private Double rating;
 
-    @OneToMany(fetch = FetchType.EAGER,orphanRemoval = true,cascade = CascadeType.ALL,mappedBy = "companyEntity")
+    @OneToMany(fetch = FetchType.EAGER,orphanRemoval = true,cascade = CascadeType.REMOVE,mappedBy = "companyEntity")
     private List<Car> cars = new LinkedList<>();
 
 }

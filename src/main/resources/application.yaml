@@ -20,7 +20,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    show-sql: true
+    show-sql: false
 logging:
   log4j2:
     logger:

@@ -10,7 +10,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> findByYear(String year);
     List<Car> findByCompanyEntity(int company);
     List<Car> findByCompanyEntityName(String Name);
-    Car deleteCarById(Integer id);
+    void deleteCarById(Integer id);
     Car findCarById(Integer id);
 
 }

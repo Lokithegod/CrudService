@@ -17,7 +17,7 @@ public interface CarService {
 
     List<Car> findCarsByCompanyName(String name);
 
-    void deleteCarById(Integer id);
+    void deleteCarById(int id);
 
     void addNewCar(Car car);
 

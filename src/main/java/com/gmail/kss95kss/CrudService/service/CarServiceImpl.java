@@ -1,12 +1,13 @@
 package com.gmail.kss95kss.CrudService.service;
 
+import com.gmail.kss95kss.CrudService.exception.*;
 import com.gmail.kss95kss.CrudService.model.Car;
-import com.gmail.kss95kss.CrudService.model.Company;
 import com.gmail.kss95kss.CrudService.repository.CarRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,41 +43,87 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> findCarsByCompanyName(String name) {
-        LOG.info("Search cars by company name: {}  ", name);
-        var cars = carRepository.findByCompanyEntityName(name);
-        return cars;
+        if (companyRepository.findCompanyByName(name) != null) {
+            LOG.info("Search cars by company name: {}  ", name);
+            var cars = carRepository.findByCompanyEntityName(name);
+            return cars;
+        } else
+            throw new CompanyNotFoundException();
     }
 
     @Override
-    public void deleteCarById(Integer id) {
-        var actual = carRepository.findCarById(id);
-        carRepository.delete(actual);
-        LOG.info("Car {} was sold ", actual);
-
+    @Transactional
+    public void deleteCarById(int id) {
+        if (carRepository.findCarById(id) != null) {
+            carRepository.deleteCarById(id);
+            LOG.info("Car was sold ");
+        } else {
+            throw new CarNotFoundException();
+        }
     }
 
     @Override
     public void addNewCar(Car car) {
-        carRepository.save(car);
-        LOG.info("Car {} was saved ", car);
-
+        LOG.info("Operation: addNewCar: New Car params :{}", car);
+        var allCars = carRepository.findAll();
+        boolean mutch = allCars.stream().anyMatch(c -> c.getVin_code().equals(car.getVin_code()));
+        if (!mutch) {
+            carRepository.save(car);
+            LOG.info("Car {} was saved ", car);
+        } else {
+            throw new DuplicateVinCodeException();
+        }
     }
 
     public Car updateCar(Integer id, Car car) {
+        LOG.info("Operation: updateCar: change with params :{}", car);
         var actual = carRepository.findCarById(id);
-        actual = car;
-        actual.setId(id);
-        carRepository.save(actual);
-        LOG.info("Car with id:{} was updated with params {}", id, car);
-        return actual;
+        if (actual != null) {
+            actual = car;
+            actual.setId(id);
+            var allCars = carRepository.findAll();
+            boolean mutch = allCars.stream().anyMatch(c -> c.getVin_code().equals(car.getVin_code()));
+            if (!mutch) {
+                carRepository.save(actual);
+                LOG.info("Car with id:{} was updated with params {}", id, car);
+                return actual;
+            } else {
+                throw new DuplicateVinCodeException();
+            }
+        } else {
+            throw new CarNotFoundException();
+        }
     }
 
     @Override
     public void addCarToCompany(int id, String companyName) {
+        LOG.info("Operation: AddCarToCompany:{}", companyName);
+        var car = carRepository.findCarById(id);
+        if (car != null) {
+            LOG.info("Car found :{}", car);
+            if (car.getCompanyEntity() != null) {
+                throw new CarAlreadyInCompanyException();
+            }
+            if (companyRepository.findCompanyByName(companyName) != null) {
+                if (checkCompanyCars(carRepository.findByCompanyEntityName(companyName))) {
+                    var company = companyRepository.findCompanyByName(companyName);
+                    car.setCompanyEntity(company);
+                    carRepository.save(car);
+                } else
+                    throw new CompanyCarsIsFullException();
+            } else {
+                throw new CompanyNotFoundException();
+            }
+        } else {
+            throw new CarNotFoundException();
+        }
+    }
 
-        var car = findCarById(id);
-        var company = companyRepository.findCompanyByName(companyName);
-        car.setCompanyEntity(company);
-        updateCar(car.getId(),car);
+    private boolean checkCompanyCars(List<Car> cars) {
+        if (cars.stream().count() >= 10) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
