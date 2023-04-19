@@ -8,13 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@Validated
 public class CrudServiceController {
 
     @Autowired
@@ -39,7 +42,7 @@ public class CrudServiceController {
     }
 
     @PostMapping("/saveCar")
-    public ResponseEntity<ServiceOperationResponse> saveCar(@RequestBody Car car) {
+    public ResponseEntity<ServiceOperationResponse> saveCar(@Valid @RequestBody Car car) {
         carService.addNewCar(car);
         return ResponseEntity.ok(new ServiceOperationResponse(List.of(car)));
     }

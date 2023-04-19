@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
 @RestControllerAdvice
 @Slf4j
-public class GeneralExceptionHandler {
+public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String DEFAULT_ERROR_CODE = "000001";
 
@@ -51,7 +53,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(value = {CarAlreadyInCompanyException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleCarAlreadyinCompanyException() {
-        var errorMessage = "Car already have Company";
+        var errorMessage = "Company already have Car";
         var errorCode= "40003";
         LOG.warn(errorMessage);
         return handleExceptionMessage(errorCode,errorMessage);

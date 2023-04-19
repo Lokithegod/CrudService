@@ -104,9 +104,9 @@ public class CarServiceImpl implements CarService {
             if (car.getCompanyEntity() != null) {
                 throw new CarAlreadyInCompanyException();
             }
-            if (companyRepository.findCompanyByName(companyName) != null) {
+            var company = companyRepository.findCompanyByName(companyName);
+            if (company != null) {
                 if (checkCompanyCars(carRepository.findByCompanyEntityName(companyName))) {
-                    var company = companyRepository.findCompanyByName(companyName);
                     car.setCompanyEntity(company);
                     carRepository.save(car);
                 } else
