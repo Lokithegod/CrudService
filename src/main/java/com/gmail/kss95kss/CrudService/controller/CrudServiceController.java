@@ -1,7 +1,8 @@
 package com.gmail.kss95kss.CrudService.controller;
 
-import com.gmail.kss95kss.CrudService.controller.domain.dto.ServiceOperationResponse;
-import com.gmail.kss95kss.CrudService.model.Car;
+import com.gmail.kss95kss.CrudService.controller.domain.dto.CarDto;
+import com.gmail.kss95kss.CrudService.mapper.CarMapper;
+import com.gmail.kss95kss.CrudService.mapper.CarMapperImpl;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.service.CarService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,25 +27,27 @@ public class CrudServiceController {
     @Autowired
     CompanyRepository companyRepository;
 
+    CarMapper carMapper = new CarMapperImpl();
+
     @GetMapping("/allCars")
-    public ResponseEntity<ServiceOperationResponse> getAllCars() {
-        return ResponseEntity.ok(new ServiceOperationResponse(carService.findAllCar()));
+    public ResponseEntity<List<CarDto>> getAllCars() {
+        return ResponseEntity.ok(carMapper.toListCarDto(carService.findAllCar()));
     }
 
     @GetMapping("/allCars/year/{year}")
-    public ResponseEntity<ServiceOperationResponse> getAllCarsByYear(@PathVariable String year) {
-        return ResponseEntity.ok(new ServiceOperationResponse(carService.findCarsByYear(year)));
+    public ResponseEntity<List<CarDto>> getAllCarsByYear(@PathVariable String year) {
+        return ResponseEntity.ok(carMapper.toListCarDto((carService.findCarsByYear(year))));
     }
 
     @GetMapping("/allCars/companyName/{companyName}")
-    public ResponseEntity<ServiceOperationResponse> getAllCarsInCompany(@PathVariable String companyName) {
-        return ResponseEntity.ok(new ServiceOperationResponse(carService.findCarsByCompanyName(companyName)));
+    public ResponseEntity<List<CarDto>> getAllCarsInCompany(@PathVariable String companyName) {
+        return ResponseEntity.ok(carMapper.toListCarDto(carService.findCarsByCompanyName(companyName)));
     }
 
     @PostMapping("/saveCar")
-    public ResponseEntity<ServiceOperationResponse> saveCar(@Valid @RequestBody Car car) {
-        carService.addNewCar(car);
-        return ResponseEntity.ok(new ServiceOperationResponse(List.of(car)));
+    public HttpStatus saveCar(@Valid @RequestBody CarDto car) {
+        carService.addNewCar(carMapper.toCarEntity(car));
+        return HttpStatus.OK;
     }
 
     @DeleteMapping("/deleteCar/{id}")
@@ -55,9 +58,9 @@ public class CrudServiceController {
     }
 
     @PutMapping("/updateCar/{id}")
-    public ResponseEntity<ServiceOperationResponse> updateCar(@PathVariable Integer id, @RequestBody Car car) {
-        var updatedCar = carService.updateCar(id, car);
-        return ResponseEntity.ok(new ServiceOperationResponse(List.of(updatedCar)));
+    public HttpStatus updateCar(@PathVariable Integer id, @RequestBody CarDto car) {
+        var updatedCar = carService.updateCar(id, carMapper.toCarEntity(car));
+        return HttpStatus.OK;
     }
 
     @PutMapping("/setCarToCompany/")

@@ -17,20 +17,18 @@ import java.util.List;
 @DynamicUpdate
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ServiceOperationResponse {
-    @JsonProperty("car")
-    private List<Car> car;
+public class CarDto {
 
-    @JsonProperty("company")
-    private Company company;
-
-
-    public ServiceOperationResponse(List<Car> car) {
-        this.car = car;
-    }
-
-    public ServiceOperationResponse(Company company) {
-        this.company = company;
-    }
+    private int id;
+    private String name;
+    private String type;
+    private String model;
+    private String year;
+    private int mileage;
+    private int price;
+    private String equipment;
+    private String about;
+    private Double rating;
+    private String vin_code;
 
 }
