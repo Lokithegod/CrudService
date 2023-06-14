@@ -2,6 +2,8 @@ package com.gmail.kss95kss.CrudService.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
+import com.gmail.kss95kss.CrudService.controller.domain.validation.CarType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -24,12 +26,14 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank
+    @NotNull
     @Column(name = "name")
-    private String name;
-    @NotBlank
+    @Enumerated(EnumType.STRING)
+    private CarName name;
+    @NotNull
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private CarType type;
     @NotBlank
     @Column(name = "model")
     private String model;

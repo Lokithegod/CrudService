@@ -1,6 +1,6 @@
 {
   "name": "BMW",
-  "type": "sedan",
+  "type": "SEDAN",
   "model": "M5",
   "year": 2011,
   "mileage": 351,

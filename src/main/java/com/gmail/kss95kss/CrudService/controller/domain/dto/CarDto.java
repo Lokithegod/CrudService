@@ -1,13 +1,10 @@
 package com.gmail.kss95kss.CrudService.controller.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gmail.kss95kss.CrudService.model.Car;
-import com.gmail.kss95kss.CrudService.model.Company;
+import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
+import com.gmail.kss95kss.CrudService.controller.domain.validation.CarType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,8 +17,8 @@ import java.util.List;
 public class CarDto {
 
     private int id;
-    private String name;
-    private String type;
+    private CarName name;
+    private CarType type;
     private String model;
     private String year;
     private int mileage;
