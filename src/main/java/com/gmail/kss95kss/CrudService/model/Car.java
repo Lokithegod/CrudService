@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -37,9 +38,9 @@ public class Car {
     @NotBlank
     @Column(name = "model")
     private String model;
-    @NotBlank
+    @NotNull
     @Column(name = "year")
-    private String year;
+    private int year;
     @Positive
     @Column(name = "mileage")
     private int mileage;

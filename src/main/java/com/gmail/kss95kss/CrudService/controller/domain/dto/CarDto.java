@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarType;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@DynamicUpdate
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CarDto {
@@ -20,7 +23,10 @@ public class CarDto {
     private CarName name;
     private CarType type;
     private String model;
-    private String year;
+    @NotNull
+    @Min(value = 1800, message = "Value must have a minimum of 4 digits")
+    @Max(value = 2023, message = "Value can have a maximum of 4 digits")
+    private int year;
     private int mileage;
     private int price;
     private String equipment;

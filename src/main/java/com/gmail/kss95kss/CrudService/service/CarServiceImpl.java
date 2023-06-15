@@ -22,6 +22,8 @@ public class CarServiceImpl implements CarService {
 
     private final CompanyRepository companyRepository;
 
+    private static final int carInCompany = 10;
+
     @Override
     public List<Car> findAllCar() {
         LOG.info("Search cars");
@@ -119,7 +121,7 @@ public class CarServiceImpl implements CarService {
     }
 
     private boolean checkCompanyCars(List<Car> cars) {
-        if (cars.stream().count() >= 10) {
+        if (cars.stream().count() >= carInCompany) {
             return false;
         } else {
             return true;

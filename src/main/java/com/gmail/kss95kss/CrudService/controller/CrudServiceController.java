@@ -2,14 +2,11 @@ package com.gmail.kss95kss.CrudService.controller;
 
 import com.gmail.kss95kss.CrudService.controller.domain.dto.CarDto;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
-import com.gmail.kss95kss.CrudService.mapper.CarMapperImpl;
-import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.service.CarService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,16 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@Validated
+@AllArgsConstructor
 public class CrudServiceController {
 
-    @Autowired
-    CarService carService;
+    private final CarService carService;
 
-    @Autowired
-    CompanyRepository companyRepository;
-
-    CarMapper carMapper = new CarMapperImpl();
+    private final CarMapper carMapper;
 
     @GetMapping("/allCars")
     public ResponseEntity<List<CarDto>> getAllCars() {
@@ -45,9 +38,9 @@ public class CrudServiceController {
     }
 
     @PostMapping("/saveCar")
-    public HttpStatus saveCar(@Valid @RequestBody CarDto car) {
+    public ResponseEntity<?> saveCar(@Valid @RequestBody CarDto car) {
         carService.addNewCar(carMapper.toCarEntity(car));
-        return HttpStatus.OK;
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/deleteCar/{id}")
@@ -64,9 +57,9 @@ public class CrudServiceController {
     }
 
     @PutMapping("/setCarToCompany/")
-    public HttpStatus setCarToCompany(@RequestParam Integer carId, @RequestParam String companyName) {
+    public ResponseEntity<?> setCarToCompany(@RequestParam Integer carId, @RequestParam String companyName) {
         carService.addCarToCompany(carId, companyName);
         var car = carService.findCarById(carId);
-        return HttpStatus.OK;
+        return ResponseEntity.ok().build();
     }
 }

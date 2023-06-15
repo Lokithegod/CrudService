@@ -1,16 +1,13 @@
 package com.gmail.kss95kss.CrudService.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmail.kss95kss.CrudService.controller.CrudServiceController;
-import com.gmail.kss95kss.CrudService.mapper.CarMapper;
+import com.gmail.kss95kss.CrudService.mapper.CarMapperImpl;
 import com.gmail.kss95kss.CrudService.utilities.TestData;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,25 +15,24 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-@AutoConfigureMockMvc
+@SpringJUnitConfig(classes = {CarMapperImpl.class})
 public class CrudServiceApiTest extends AbstractRestControllerTest {
-    @Autowired
-    private CrudServiceController controller;
-    @Autowired
-    ObjectMapper objectMapper;
 
-    CarMapper carMapper;
+    ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
 
     @Test
     @SneakyThrows
     void ifFindAllCarThenSuccess() {
         var cars = TestData.getCars();
         var response = objectMapper.writeValueAsString(carMapper.toListCarDto(cars));
+//        var response = objectMapper.writeValueAsString(cars);
         when(carService.findAllCar()).thenReturn(cars);
         mockMvc.perform(get("/api/allCars")
                         .contentType(MediaType.APPLICATION_JSON))
