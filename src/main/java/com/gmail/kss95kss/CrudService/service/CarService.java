@@ -13,7 +13,7 @@ public interface CarService {
 
     Car findCarById(int id);
 
-    List<Car> findCarsByYear(String year);
+    List<Car> findCarsByYear(int year);
 
     List<Car> findCarsByCompanyName(String name);
 

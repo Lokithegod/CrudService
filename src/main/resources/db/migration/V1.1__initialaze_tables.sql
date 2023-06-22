@@ -31,6 +31,10 @@ create table company
 alter table car
     add constraint car_k foreign key (company_entity_id) references company;
 
+create index year_index on Car (year);
+create index company_index on Company (name);
+
+
 
 INSERT into company (id ,name, address, about, rating)
 VALUES (nextval('hibernate_sequence'),'Baza', 'Kuiv', 'car market with best cars', 5.0);

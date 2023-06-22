@@ -44,7 +44,7 @@ public class CrudServiceApiTest extends AbstractRestControllerTest {
     @SneakyThrows
     void ifFindCarByYearThenSuccess() {
         var cars = TestData.getCars();
-        var year = "2016";
+        var year = 2016;
         var response = objectMapper.writeValueAsString(carMapper.toListCarDto(cars));
         when(carService.findCarsByYear(year)).thenReturn(cars);
         mockMvc.perform(get("/api/allCars/year/{year}", year)

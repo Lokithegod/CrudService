@@ -51,8 +51,8 @@ public class CarServiceTest {
         //Given
         var expected = TestData.getCarsByYear();
         //When
-        when(carRepository.findByYear("2016")).thenReturn(TestData.getCarsByYear());
-        var actual = carService.findCarsByYear("2016");
+        when(carRepository.findByYear(2016)).thenReturn(TestData.getCarsByYear());
+        var actual = carService.findCarsByYear(2016);
         //Then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 

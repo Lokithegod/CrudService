@@ -1,6 +1,7 @@
 package com.gmail.kss95kss.CrudService.controller.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarType;
 import lombok.*;
@@ -32,6 +33,7 @@ public class CarDto {
     private String equipment;
     private String about;
     private Double rating;
-    private String vin_code;
+    @JsonProperty("vin_code")
+    private String vin;
 
 }

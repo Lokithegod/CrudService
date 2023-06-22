@@ -8,7 +8,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -59,7 +58,7 @@ public class Car {
     private Double rating;
     @NotBlank
     @Column(name = "vin")
-    private String vin_code;
+    private String vin;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude

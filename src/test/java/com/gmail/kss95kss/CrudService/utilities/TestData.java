@@ -30,7 +30,7 @@ public class TestData {
                         .address("Kuiv")
                         .rating(5.0)
                         .build())
-                .vin_code("JH4DA9390MS033554")
+                .vin("JH4DA9390MS033554")
                 .year(2016)
                 .build();
         var car2 = Car.builder()
@@ -48,7 +48,7 @@ public class TestData {
                         .address("Kuiv")
                         .rating(5.0)
                         .build())
-                .vin_code("JH4DA9390MS033554")
+                .vin("JH4DA9390MS033554")
                 .year(2015)
                 .build();
         List<Car> cars = new ArrayList<Car>();
@@ -75,7 +75,7 @@ public class TestData {
                         .address("Kuiv")
                         .rating(5.0)
                         .build())
-                .vin_code("JH4DA9390MS033554")
+                .vin("JH4DA9390MS033554")
                 .year(2016)
                 .build();
         List<Car> cars = new ArrayList<Car>();
@@ -109,7 +109,7 @@ public class TestData {
                         .address("Kuiv")
                         .rating(5.0)
                         .build())
-                .vin_code("JH4DA9390MS033554")
+                .vin("JH4DA9390MS033554")
                 .year(2016)
                 .id(id)
                 .build();
@@ -131,7 +131,7 @@ public class TestData {
                         .address("Kuiv")
                         .rating(5.0)
                         .build())
-                .vin_code(vin)
+                .vin(vin)
                 .year(2016)
                 .id(3)
                 .build();
@@ -147,7 +147,7 @@ public class TestData {
                 .model("Q5")
                 .type(CROSSOVER)
                 .name(AUDI)
-                .vin_code("JH4DA9390MS033554")
+                .vin("JH4DA9390MS033554")
                 .year(2016)
                 .id(0)
                 .build();

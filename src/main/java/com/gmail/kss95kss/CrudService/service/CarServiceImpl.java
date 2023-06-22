@@ -36,7 +36,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findCarsByYear(String year) {
+    public List<Car> findCarsByYear(int year) {
         LOG.info("Search cars by {} year", year);
         var cars = carRepository.findByYear(year);
         return cars;
@@ -67,7 +67,7 @@ public class CarServiceImpl implements CarService {
     public void addNewCar(Car car) {
         LOG.info("Operation: addNewCar: New Car params :{}", car);
         var allCars = carRepository.findAll();
-        boolean mutch = allCars.stream().anyMatch(c -> c.getVin_code().equals(car.getVin_code()));
+        boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
         if (!mutch) {
             carRepository.save(car);
             LOG.info("Car {} was saved ", car);
@@ -83,7 +83,7 @@ public class CarServiceImpl implements CarService {
             actual = car;
             actual.setId(id);
             var allCars = carRepository.findAll();
-            boolean mutch = allCars.stream().anyMatch(c -> c.getVin_code().equals(car.getVin_code()));
+            boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
             if (!mutch) {
                 carRepository.save(actual);
                 LOG.info("Car with id:{} was updated with params {}", id, car);

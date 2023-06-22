@@ -22,44 +22,43 @@ public class CrudServiceController {
 
     private final CarMapper carMapper;
 
-    @GetMapping("/allCars")
+    @GetMapping("/cars")
     public ResponseEntity<List<CarDto>> getAllCars() {
         return ResponseEntity.ok(carMapper.toListCarDto(carService.findAllCar()));
     }
 
-    @GetMapping("/allCars/year/{year}")
-    public ResponseEntity<List<CarDto>> getAllCarsByYear(@PathVariable String year) {
+    @GetMapping("/cars/year")
+    public ResponseEntity<List<CarDto>> getAllCarsByYear(@RequestParam int year) {
         return ResponseEntity.ok(carMapper.toListCarDto((carService.findCarsByYear(year))));
     }
 
-    @GetMapping("/allCars/companyName/{companyName}")
-    public ResponseEntity<List<CarDto>> getAllCarsInCompany(@PathVariable String companyName) {
+    @GetMapping("/cars/company")
+    public ResponseEntity<List<CarDto>> getAllCarsInCompany(@RequestParam String companyName) {
         return ResponseEntity.ok(carMapper.toListCarDto(carService.findCarsByCompanyName(companyName)));
     }
 
-    @PostMapping("/saveCar")
+    @PostMapping("/cars")
     public ResponseEntity<?> saveCar(@Valid @RequestBody CarDto car) {
         carService.addNewCar(carMapper.toCarEntity(car));
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/deleteCar/{id}")
-    public HttpStatus deleteCar(@PathVariable Integer id) {
+    @DeleteMapping("/cars")
+    public HttpStatus deleteCar(@RequestParam Integer id) {
         var car = carService.findCarById(id);
         carService.deleteCarById(id);
         return HttpStatus.NO_CONTENT;
     }
 
-    @PutMapping("/updateCar/{id}")
-    public HttpStatus updateCar(@PathVariable Integer id, @RequestBody CarDto car) {
+    @PutMapping("/cars")
+    public HttpStatus updateCar(@RequestParam Integer id, @RequestBody CarDto car) {
         var updatedCar = carService.updateCar(id, carMapper.toCarEntity(car));
         return HttpStatus.OK;
     }
 
-    @PutMapping("/setCarToCompany/")
-    public ResponseEntity<?> setCarToCompany(@RequestParam Integer carId, @RequestParam String companyName) {
-        carService.addCarToCompany(carId, companyName);
-        var car = carService.findCarById(carId);
+    @PutMapping("/cars/setCompany")
+    public ResponseEntity<?> setCarToCompany(@RequestParam Integer id, @RequestParam String companyName) {
+        carService.addCarToCompany(id, companyName);
         return ResponseEntity.ok().build();
     }
 }
