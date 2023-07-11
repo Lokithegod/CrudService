@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "d5203b68-9d5c-4afb-a992-0ce1804bb83c",
+		"name": "CrudService",
+		"description": "https://github.com/Lokithegod/CrudService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET allCars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/allCars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"allCars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET allCarsByCompany",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/allCars/?company=Baza",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"allCars",
+						""
+					],
+					"query": [
+						{
+							"key": "company",
+							"value": "Baza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET allCarsByYear",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/allCars/?company=Baza",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"allCars",
+						""
+					],
+					"query": [
+						{
+							"key": "company",
+							"value": "Baza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST saveCar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"name\": \"BMW\",\n    \"type\": \"sedan\",\n    \"model\": \"M5\",\n    \"year\": 2011,\n    \"mileage\": 351,\n    \"price\": 14345,\n    \"equipment\": \"SEL\",\n    \"about\": \"Trash\",\n    \"rating\": 3.9,\n    \"vin_code\": \"1G1ZT51816F264063\"\n  }\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/saveCar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"saveCar"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Audi",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "sedan",
+							"disabled": true
+						},
+						{
+							"key": "model",
+							"value": "RS6",
+							"disabled": true
+						},
+						{
+							"key": "year",
+							"value": "2015",
+							"disabled": true
+						},
+						{
+							"key": "mileage",
+							"value": "176",
+							"disabled": true
+						},
+						{
+							"key": "price",
+							"value": "18500",
+							"disabled": true
+						},
+						{
+							"key": "equipment",
+							"value": "SEL",
+							"disabled": true
+						},
+						{
+							"key": "about",
+							"value": "qwe",
+							"disabled": true
+						},
+						{
+							"key": "rating",
+							"value": "5.0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST UpdateCar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/allCars/?company=Baza",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"allCars",
+						""
+					],
+					"query": [
+						{
+							"key": "company",
+							"value": "Baza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST setCarToCompany",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/allCars/?company=Baza",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"allCars",
+						""
+					],
+					"query": [
+						{
+							"key": "company",
+							"value": "Baza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE deleteCar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/allCars/?company=Baza",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"allCars",
+						""
+					],
+					"query": [
+						{
+							"key": "company",
+							"value": "Baza"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
