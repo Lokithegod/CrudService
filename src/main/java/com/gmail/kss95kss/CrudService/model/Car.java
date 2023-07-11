@@ -60,6 +60,7 @@ public class Car {
     @Column(name = "vin")
     private String vin;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     @JsonIgnore

@@ -1,11 +1,18 @@
 package com.gmail.kss95kss.CrudService.service;
 
+import com.gmail.kss95kss.CrudService.config.PageSettings;
+import com.gmail.kss95kss.CrudService.controller.domain.dto.CarDto;
+import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.exception.*;
+import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.repository.CarRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +29,24 @@ public class CarServiceImpl implements CarService {
 
     private final CompanyRepository companyRepository;
 
+    private final CarMapper carMapper;
+
     private static final int carInCompany = 10;
 
+    private final PageSettings pageSettings = new PageSettings();
+
+
     @Override
-    public List<Car> findAllCar() {
+    public Page<Car> findAllCar(PageSettings pageSettings) {
         LOG.info("Search cars");
-        return carRepository.findAll();
+        return carRepository.findAll(PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()));
+    }
+
+    @Override
+    public Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings) {
+        List<Car> listCars = carRepository.findAllByNameAndModelAndYearAndPrice(name, year, price,model);
+        Page<Car> cars = new PageImpl<Car>(listCars, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()), listCars.size());
+        return cars;
     }
 
     @Override
@@ -36,17 +55,16 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findCarsByYear(int year) {
+    public Page<Car> findCarsByYear(int year, PageSettings pageSettings) {
         LOG.info("Search cars by {} year", year);
-        var cars = carRepository.findByYear(year);
-        return cars;
+        return carRepository.findByYear(year, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()));
     }
 
     @Override
-    public List<Car> findCarsByCompanyName(String name) {
+    public Page<Car> findCarsByCompanyName(String name) {
         if (companyRepository.findCompanyByName(name) != null) {
             LOG.info("Search cars by company name: {}  ", name);
-            var cars = carRepository.findByCompanyEntityName(name);
+            var cars = carRepository.findByCompanyEntityName(name, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()));
             return cars;
         } else
             throw new CompanyNotFoundException();
@@ -66,8 +84,9 @@ public class CarServiceImpl implements CarService {
     @Override
     public void addNewCar(Car car) {
         LOG.info("Operation: addNewCar: New Car params :{}", car);
-        var allCars = carRepository.findAll();
-        boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
+        // var allCars = carRepository.findAll();
+        //boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
+        boolean mutch = carRepository.existsByVin(car.getVin());
         if (!mutch) {
             carRepository.save(car);
             LOG.info("Car {} was saved ", car);
@@ -76,16 +95,17 @@ public class CarServiceImpl implements CarService {
         }
     }
 
-    public Car updateCar(Integer id, Car car) {
+    public CarDto updateCar(Integer id, CarDto car) {
         LOG.info("Operation: updateCar: change with params :{}", car);
-        var actual = carRepository.findCarById(id);
+        var actual = carMapper.toCarDto(carRepository.findCarById(id));
         if (actual != null) {
             actual = car;
             actual.setId(id);
-            var allCars = carRepository.findAll();
-            boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
+            // var allCars = carRepository.findAll();
+            // boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
+            boolean mutch = carRepository.existsByVin(car.getVin());
             if (!mutch) {
-                carRepository.save(actual);
+                carRepository.save(carMapper.toCarEntity(actual));
                 LOG.info("Car with id:{} was updated with params {}", id, car);
                 return actual;
             } else {
@@ -107,7 +127,7 @@ public class CarServiceImpl implements CarService {
             }
             var company = companyRepository.findCompanyByName(companyName);
             if (company != null) {
-                if (checkCompanyCars(carRepository.findByCompanyEntityName(companyName))) {
+                if (checkCompanyCars((List<Car>) carRepository.findByCompanyEntityName(companyName, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage())))) {
                     car.setCompanyEntity(company);
                     carRepository.save(car);
                 } else

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarType;
+import com.gmail.kss95kss.CrudService.model.Car;
 import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -18,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CarDto {
+public class CarDto{
 
     private int id;
     private CarName name;
@@ -35,5 +37,4 @@ public class CarDto {
     private Double rating;
     @JsonProperty("vin_code")
     private String vin;
-
 }

@@ -1,6 +1,9 @@
 package com.gmail.kss95kss.CrudService.service;
 
+import com.gmail.kss95kss.CrudService.config.PageSettings;
 import com.gmail.kss95kss.CrudService.exception.*;
+import com.gmail.kss95kss.CrudService.mapper.CarMapper;
+import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.repository.CarRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.utilities.TestData;
@@ -9,6 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -19,9 +25,16 @@ public class CarServiceTest {
     @Mock
     private CarRepository carRepository;
     @Mock
+    private CarMapper carMapper;
+    @Mock
     private CompanyRepository companyRepository;
     @InjectMocks
     private CarServiceImpl carService;
+
+    private  PageSettings pageSettings = new PageSettings();
+
+    private  Pageable firstPage = PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage());
+   // private static Pageable firstPage = PageRequest.of(0, 10);
 
 
     @Test
@@ -30,7 +43,7 @@ public class CarServiceTest {
         var expected = TestData.getCars();
         //When
         when(carRepository.findAll()).thenReturn(TestData.getCars());
-        var actual = carService.findAllCar();
+        var actual = carService.findAllCar(pageSettings);
         //Then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -51,8 +64,8 @@ public class CarServiceTest {
         //Given
         var expected = TestData.getCarsByYear();
         //When
-        when(carRepository.findByYear(2016)).thenReturn(TestData.getCarsByYear());
-        var actual = carService.findCarsByYear(2016);
+        when(carRepository.findByYear(2016,PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()))).thenReturn((Page<Car>) TestData.getCarsByYear());
+        var actual = carService.findCarsByYear(2016,pageSettings);
         //Then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 
@@ -64,7 +77,7 @@ public class CarServiceTest {
         var expected = TestData.getCars();
         //When
         when(companyRepository.findCompanyByName("Baza")).thenReturn(TestData.getCompany());
-        when(carRepository.findByCompanyEntityName("Baza")).thenReturn(TestData.getCars());
+        when(carRepository.findByCompanyEntityName("Baza",firstPage)).thenReturn((Page<Car>) TestData.getCars());
         var actual = carService.findCarsByCompanyName("Baza");
         //Then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
@@ -95,7 +108,7 @@ public class CarServiceTest {
     @Test
     void ifAddNewCarThenDuplicateVinCodeException() {
         //Given
-        when(carService.findAllCar()).thenReturn(TestData.addInToGetCars(TestData.getCar(1)));
+        when(carService.findAllCar(pageSettings)).thenReturn((Page<Car>) TestData.addInToGetCars(TestData.getCar(1)));
         //When
         assertThatExceptionOfType(DuplicateVinCodeException.class)
                 //when
@@ -127,7 +140,7 @@ public class CarServiceTest {
         //Given
         when(carRepository.findCarById(0)).thenReturn(TestData.getCar());
         //Then
-        assertThatCode(() -> carService.updateCar(0,carRepository.findCarById(0)))
+        assertThatCode(() -> carService.updateCar(0,carMapper.toCarDto(carRepository.findCarById(0))))
                 //then
                 .doesNotThrowAnyException();
     }
@@ -138,7 +151,7 @@ public class CarServiceTest {
         //Then
         assertThatExceptionOfType(CarNotFoundException.class)
                 //when
-                .isThrownBy(() -> carService.updateCar(0,carRepository.findCarById(0)));
+                .isThrownBy(() -> carService.updateCar(0,carMapper.toCarDto(carRepository.findCarById(0))));
     }
 
     @Test
@@ -149,7 +162,7 @@ public class CarServiceTest {
         //Then
         assertThatExceptionOfType(DuplicateVinCodeException.class)
                 //when
-                .isThrownBy(() -> carService.updateCar(0,carRepository.findCarById(0)));
+                .isThrownBy(() -> carService.updateCar(0,carMapper.toCarDto(carRepository.findCarById(0))));
     }
 
     @Test
@@ -198,7 +211,7 @@ public class CarServiceTest {
         //Given
         when(carRepository.findCarById(0)).thenReturn(TestData.getCarWithEmptyCompany());
         when(companyRepository.findCompanyByName("Baza")).thenReturn(TestData.getCompany());
-        when(carRepository.findByCompanyEntityName("Baza")).thenReturn(TestData.getCars());
+        when(carRepository.findByCompanyEntityName("Baza",firstPage)).thenReturn((Page<Car>) TestData.getCars());
         //Then
         assertThatExceptionOfType(CompanyCarsIsFullException.class)
                 //when

@@ -5,6 +5,7 @@ import com.gmail.kss95kss.CrudService.model.Car;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface CarMapper {
     CarDto toCarDto(Car car);
 
     List<CarDto> toListCarDto(List<Car> car);
+
+
 }

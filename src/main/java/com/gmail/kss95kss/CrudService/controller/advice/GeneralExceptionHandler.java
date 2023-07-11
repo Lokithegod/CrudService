@@ -21,7 +21,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     ErrorResponse handleDuplicateVinCodeException(DuplicateVinCodeException e) {
         var errorMessage = e.getMessage();
-        LOG.warn("Incorrect VIN-CODE (Duplicate): {}", errorMessage);
+        LOG.warn("Incorrect VIN-CODE (Duplicate): {}", e);
         return handleExceptionMessage("409001", "Incorrect VIN-CODE (Duplicate)");
     }
 
@@ -29,7 +29,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleDefaultClientException(DefaultClientException e) {
         var errorMessage = e.getMessage();
-        LOG.warn("Something got wrong: {}", errorMessage);
+        LOG.warn("Something got wrong: {}", e);
         return handleExceptionMessage(errorMessage);
     }
 
@@ -37,7 +37,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleNullPointerException(NullPointerException e) {
         var errorMessage = e.getMessage();
-        LOG.warn("Something got wrong: {}", errorMessage);
+        LOG.warn("Something got wrong: {}", e);
         return handleExceptionMessage(errorMessage);
     }
 

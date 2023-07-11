@@ -28,5 +28,5 @@ logging:
         hibername: info
     config:
       override:
-debug: false
+debug: true
 # Hibernate ddl auto (create, create-drop, validate, update)
