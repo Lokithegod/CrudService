@@ -7,7 +7,9 @@ import com.gmail.kss95kss.CrudService.exception.*;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.repository.CarRepository;
+import com.gmail.kss95kss.CrudService.repository.CarSearchRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
+import com.gmail.kss95kss.CrudService.repository.specification.CarSearchParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,8 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
 
+    private final CarSearchRepository carSearchRepository;
+
     private final CompanyRepository companyRepository;
 
     private final CarMapper carMapper;
@@ -44,8 +48,11 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings) {
-        List<Car> listCars = carRepository.findAllByNameAndModelAndYearAndPrice(name, year, price,model);
-        Page<Car> cars = new PageImpl<Car>(listCars, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()), listCars.size());
+        var searchParams = new CarSearchParams(name,year,price,model);
+        LOG.info("Params is : {}",searchParams);
+        var cars = carSearchRepository.findCarsByCriteria(searchParams, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()));
+        //var listCars = carRepository.findAllByNameAndModelAndYearAndPrice(name,year,price,model);
+       // Page<Car> carss = new PageImpl<Car>(cars, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()), cars.size());
         return cars;
     }
 

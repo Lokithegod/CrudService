@@ -7,19 +7,16 @@ import com.gmail.kss95kss.CrudService.model.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-
 @Validated
 public interface CarService {
 
     Page<Car> findAllCar(PageSettings settings);
 
-    Page<Car> findCarsByCriteria (CarName name, int year,int price,String model,PageSettings pageSettings);
-
+    Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings);
 
     Car findCarById(int id);
 
-    Page<Car> findCarsByYear(int year,PageSettings PageSettings);
+    Page<Car> findCarsByYear(int year, PageSettings PageSettings);
 
     Page<Car> findCarsByCompanyName(String name);
 
@@ -29,6 +26,6 @@ public interface CarService {
 
     CarDto updateCar(Integer id, CarDto car);
 
-    void addCarToCompany (int id, String companyName);
+    void addCarToCompany(int id, String companyName);
 
 }

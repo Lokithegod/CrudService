@@ -33,7 +33,7 @@ public class CrudServiceController {
     public ResponseEntity getAllCars(@RequestParam int page,
                                              @RequestParam int elementPerPage,
                                              @RequestParam(required = false) CarName name,
-                                             @RequestParam(required = false, defaultValue = "1850") int year,
+                                             @RequestParam(required = false, defaultValue = "2025") int year,
                                              @RequestParam(required = false) String model,
                                              @RequestParam(required = false,defaultValue = "999999999") int price) {
         pageSettings.setPage(page);

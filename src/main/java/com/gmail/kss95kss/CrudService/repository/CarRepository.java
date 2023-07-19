@@ -3,6 +3,8 @@ package com.gmail.kss95kss.CrudService.repository;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.model.Company;
+import com.gmail.kss95kss.CrudService.repository.specification.CarSearchParams;
+import com.gmail.kss95kss.CrudService.repository.specification.CarSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,6 +37,11 @@ public interface CarRepository extends PagingAndSortingRepository<Car, Long>, Jp
 
     Boolean existsByVin(String vin);
 
+/*    default Page<Car> findCarsByCriteria(CarSearchParams params, Pageable page) {
+        return findAll(new CarSpecification(params), page);
+    }*/
+
+
     default List<Car> findAllByNameAndModelAndYearAndPrice(CarName name, int year, int price, String model) {
 
         var specification = Specification
@@ -65,23 +72,26 @@ public interface CarRepository extends PagingAndSortingRepository<Car, Long>, Jp
     }
 
     static Specification<Car> withYear(int year) {
-        return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("year"), year));
-/*        return ((root, query, criteriaBuilder) -> {
+        //return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("year"), year));
+        return ((root, query, criteriaBuilder) -> {
             if (year <= 0) {
                 return criteriaBuilder.conjunction();
             }
             return criteriaBuilder.lessThanOrEqualTo(root.get("year"), year);
-        });*/
+        });
+
     }
 
     static Specification<Car> withPrice(int price) {
-        return ((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), price));
-        /*return ((root, query, criteriaBuilder) -> {
+        //return ((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), price));
+
+        return ((root, query, criteriaBuilder) -> {
             if (price <= 0) {
                 return criteriaBuilder.conjunction();
             }
             return criteriaBuilder.lessThanOrEqualTo(root.get("price"), price);
-        });*/
+        });
+
     }
 
 
