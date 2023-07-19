@@ -2,10 +2,10 @@ package com.gmail.kss95kss.CrudService.controller;
 
 import com.gmail.kss95kss.CrudService.config.PageSettings;
 import com.gmail.kss95kss.CrudService.controller.domain.dto.CarDto;
-import com.gmail.kss95kss.CrudService.controller.domain.dto.PageDto;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.mapper.PageToPageDtoMapper;
+import com.gmail.kss95kss.CrudService.service.CarSearchService;
 import com.gmail.kss95kss.CrudService.service.CarService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Year;
 
 @RestController
 @RequestMapping("/api")
@@ -23,22 +24,26 @@ public class CrudServiceController {
 
     private final CarService carService;
 
+    private final CarSearchService carSearchService;
+
     private final CarMapper carMapper;
 
     private final PageToPageDtoMapper pageDtoMapper;
 
     private final PageSettings pageSettings;
 
+
+
     @GetMapping("/cars")
     public ResponseEntity getAllCars(@RequestParam int page,
-                                             @RequestParam int elementPerPage,
-                                             @RequestParam(required = false) CarName name,
-                                             @RequestParam(required = false, defaultValue = "2025") int year,
-                                             @RequestParam(required = false) String model,
-                                             @RequestParam(required = false,defaultValue = "999999999") int price) {
+                                     @RequestParam int elementPerPage,
+                                     @RequestParam(required = false) CarName name,
+                                     @RequestParam(required = false, defaultValue = "2025") int year,
+                                     @RequestParam(required = false) String model,
+                                     @RequestParam(required = false, defaultValue = "999999999") int price) {
         pageSettings.setPage(page);
         pageSettings.setElementPerPage(elementPerPage);
-        PageDto carsPage = pageDtoMapper.pageToPageDto(carService.findCarsByCriteria(name,year,price,model,pageSettings));
+        var carsPage = pageDtoMapper.pageToPageDto(carSearchService.findCarsByCriteria(name, year, price, model, pageSettings));
         LOG.info("Request for car page received with data : " + pageSettings);
         return ResponseEntity.ok().body(carsPage);
     }

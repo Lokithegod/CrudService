@@ -46,7 +46,7 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAll(PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()));
     }
 
-    @Override
+/*    @Override
     public Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings) {
         var searchParams = new CarSearchParams(name,year,price,model);
         LOG.info("Params is : {}",searchParams);
@@ -54,7 +54,7 @@ public class CarServiceImpl implements CarService {
         //var listCars = carRepository.findAllByNameAndModelAndYearAndPrice(name,year,price,model);
        // Page<Car> carss = new PageImpl<Car>(cars, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()), cars.size());
         return cars;
-    }
+    }*/
 
     @Override
     public Car findCarById(int id) {

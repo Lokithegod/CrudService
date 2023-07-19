@@ -12,7 +12,7 @@ public interface CarService {
 
     Page<Car> findAllCar(PageSettings settings);
 
-    Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings);
+   // Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings);
 
     Car findCarById(int id);
 
