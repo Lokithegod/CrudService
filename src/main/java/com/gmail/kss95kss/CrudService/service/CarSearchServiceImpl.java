@@ -4,7 +4,7 @@ import com.gmail.kss95kss.CrudService.config.PageSettings;
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.model.Car;
-import com.gmail.kss95kss.CrudService.repository.CarRepository;
+import com.gmail.kss95kss.CrudService.repository.CarRepositoryCrud;
 import com.gmail.kss95kss.CrudService.repository.CarSearchRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.repository.specification.CarSearchParams;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class CarSearchServiceImpl implements CarSearchService {
-    private final CarRepository carRepository;
+    private final CarRepositoryCrud carRepository;
 
     private final CarSearchRepository carSearchRepository;
 
@@ -31,8 +31,8 @@ public class CarSearchServiceImpl implements CarSearchService {
     private final PageSettings pageSettings = new PageSettings();
 
     @Override
-    public Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings) {
-        var searchParams = new CarSearchParams(name, year, price, model);
+    public Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, String companyName, PageSettings pageSettings) {
+        var searchParams = new CarSearchParams(name, year, price, model, companyName);
         LOG.info("Params is : {}", searchParams);
         var cars = carSearchRepository.findCarsByCriteria(searchParams, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()));
         return cars;

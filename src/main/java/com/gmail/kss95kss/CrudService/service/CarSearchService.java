@@ -9,5 +9,5 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface CarSearchService {
 
-    Page<Car> findCarsByCriteria(CarName name, int year, int price, String model, PageSettings pageSettings);
+    Page<Car> findCarsByCriteria(CarName name, int year, int price, String model,String companyName, PageSettings pageSettings);
 }

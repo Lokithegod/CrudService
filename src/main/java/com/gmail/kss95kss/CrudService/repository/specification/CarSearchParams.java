@@ -12,4 +12,5 @@ public class CarSearchParams {
     private int year;
     private int price;
     private String model;
+    private String companyName;
 }

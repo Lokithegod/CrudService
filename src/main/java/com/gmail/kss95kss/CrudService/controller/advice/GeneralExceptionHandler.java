@@ -68,6 +68,15 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionMessage(errorCode,errorMessage);
     }
 
+    @ExceptionHandler(value = {IncorrectVinCodeException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ErrorResponse handleIncorrectVinCodeException(IncorrectVinCodeException e) {
+        var errorMessage =e.getMessage();
+        var errorCode= "40004";
+        LOG.warn(errorMessage);
+        return handleExceptionMessage(errorCode,errorMessage);
+    }
+
     @ExceptionHandler(value = {CompanyNotFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleCompanyNotFoundException() {

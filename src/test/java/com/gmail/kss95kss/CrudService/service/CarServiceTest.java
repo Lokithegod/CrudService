@@ -4,7 +4,7 @@ import com.gmail.kss95kss.CrudService.config.PageSettings;
 import com.gmail.kss95kss.CrudService.exception.*;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.model.Car;
-import com.gmail.kss95kss.CrudService.repository.CarRepository;
+import com.gmail.kss95kss.CrudService.repository.CarRepositoryCrud;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
 import com.gmail.kss95kss.CrudService.utilities.TestData;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class CarServiceTest {
 
     @Mock
-    private CarRepository carRepository;
+    private CarRepositoryCrud carRepository;
     @Mock
     private CarMapper carMapper;
     @Mock

@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.Year;
+import java.util.Timer;
 
 @RestController
 @RequestMapping("/api")
@@ -33,18 +33,23 @@ public class CrudServiceController {
     private final PageSettings pageSettings;
 
 
-
     @GetMapping("/cars")
-    public ResponseEntity getAllCars(@RequestParam int page,
-                                     @RequestParam int elementPerPage,
-                                     @RequestParam(required = false) CarName name,
-                                     @RequestParam(required = false, defaultValue = "2025") int year,
-                                     @RequestParam(required = false) String model,
-                                     @RequestParam(required = false, defaultValue = "999999999") int price) {
+    public ResponseEntity getAllCars(@RequestParam(value = "page") int page,
+                                     @RequestParam(value = "elementPerPage") int elementPerPage,
+                                     @RequestParam(required = false, value = "name") CarName name,
+                                     @RequestParam(required = false, value = "year", defaultValue = "2025") int year,
+                                     @RequestParam(required = false, value = "model") String model,
+                                     @RequestParam(required = false, value = "price", defaultValue = "999999999") int price,
+                                     @RequestParam(required = false, value = "company") String companyName) {
+        var startTimer = System.nanoTime();
+        LOG.info("Operation: search");
         pageSettings.setPage(page);
         pageSettings.setElementPerPage(elementPerPage);
-        var carsPage = pageDtoMapper.pageToPageDto(carSearchService.findCarsByCriteria(name, year, price, model, pageSettings));
+        var carsPage = pageDtoMapper.pageToPageDto(carSearchService.findCarsByCriteria(name, year, price, model, companyName, pageSettings));
         LOG.info("Request for car page received with data : " + pageSettings);
+        var endTimer = System.nanoTime();
+        var operationTime = (endTimer-startTimer)/1000000;
+        LOG.info("OPERATION TIME: {} millisecond",operationTime);
         return ResponseEntity.ok().body(carsPage);
     }
 
@@ -61,7 +66,11 @@ public class CrudServiceController {
 
     @PostMapping("/cars")
     public ResponseEntity<?> saveCar(@Valid @RequestBody CarDto car) {
+        var startTimer = System.nanoTime();
         carService.addNewCar(carMapper.toCarEntity(car));
+        var endTimer = System.nanoTime();
+        var operationTime = (endTimer-startTimer)/1000000;
+        LOG.info("OPERATION TIME: {} millisecond",operationTime);
         return ResponseEntity.ok().build();
     }
 

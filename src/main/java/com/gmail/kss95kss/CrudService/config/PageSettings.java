@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Getter
 public class PageSettings {
 
-    private int page = 1;
+    private int page = 0;
 
     private int elementPerPage = 5;
 

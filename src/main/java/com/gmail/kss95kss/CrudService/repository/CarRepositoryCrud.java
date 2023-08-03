@@ -2,32 +2,18 @@ package com.gmail.kss95kss.CrudService.repository;
 
 import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.model.Car;
-import com.gmail.kss95kss.CrudService.model.Company;
-import com.gmail.kss95kss.CrudService.repository.specification.CarSearchParams;
-import com.gmail.kss95kss.CrudService.repository.specification.CarSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public interface CarRepository extends PagingAndSortingRepository<Car, Long>, JpaSpecificationExecutor<Car> {
+public interface CarRepositoryCrud extends PagingAndSortingRepository<Car, Long>, JpaSpecificationExecutor<Car> {
 
-    Page<Car> findByName(@NotNull CarName name, Pageable pageable);
-
-    Page<Car> findByNameAndModel(@NotNull CarName name, @NotBlank String model, Pageable pageable);
-
-    Page<Car> findByYearAndName(@NotNull int year, @NotNull CarName name, Pageable pageable);
-
-    Page<Car> findByYearAndNameAndModel(@NotNull int year, @NotNull CarName name, @NotBlank String model, Pageable pageable);
 
     Page<Car> findByYear(int year, Pageable pageable);
-
-    Page<Car> findByCompanyEntity(Company companyEntity, Pageable pageable);
 
     Page<Car> findByCompanyEntityName(String Name, Pageable pageable);
 
@@ -36,11 +22,6 @@ public interface CarRepository extends PagingAndSortingRepository<Car, Long>, Jp
     Car findCarById(Integer id);
 
     Boolean existsByVin(String vin);
-
-/*    default Page<Car> findCarsByCriteria(CarSearchParams params, Pageable page) {
-        return findAll(new CarSpecification(params), page);
-    }*/
-
 
     default List<Car> findAllByNameAndModelAndYearAndPrice(CarName name, int year, int price, String model) {
 

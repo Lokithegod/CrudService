@@ -39,13 +39,13 @@ public class Car {
     private String model;
     @NotNull
     @Column(name = "year")
-    private int year;
+    private Integer year;
     @Positive
     @Column(name = "mileage")
-    private int mileage;
+    private Integer mileage;
     @Positive
     @Column(name = "price")
-    private int price;
+    private Integer price;
     @NotBlank
     @Column(name = "equipment")
     private String equipment;
@@ -61,7 +61,7 @@ public class Car {
     private String vin;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonIgnore
     private Company companyEntity;

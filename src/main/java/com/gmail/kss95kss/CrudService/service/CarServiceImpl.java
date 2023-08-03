@@ -2,18 +2,15 @@ package com.gmail.kss95kss.CrudService.service;
 
 import com.gmail.kss95kss.CrudService.config.PageSettings;
 import com.gmail.kss95kss.CrudService.controller.domain.dto.CarDto;
-import com.gmail.kss95kss.CrudService.controller.domain.validation.CarName;
 import com.gmail.kss95kss.CrudService.exception.*;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.model.Car;
-import com.gmail.kss95kss.CrudService.repository.CarRepository;
+import com.gmail.kss95kss.CrudService.repository.CarRepositoryCrud;
 import com.gmail.kss95kss.CrudService.repository.CarSearchRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
-import com.gmail.kss95kss.CrudService.repository.specification.CarSearchParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +24,7 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
 
 
-    private final CarRepository carRepository;
+    private final CarRepositoryCrud carRepository;
 
     private final CarSearchRepository carSearchRepository;
 
@@ -82,7 +79,7 @@ public class CarServiceImpl implements CarService {
     public void deleteCarById(int id) {
         if (carRepository.findCarById(id) != null) {
             carRepository.deleteCarById(id);
-            LOG.info("Car was sold ");
+            LOG.info("Car was sold. id {}",id);
         } else {
             throw new CarNotFoundException();
         }
