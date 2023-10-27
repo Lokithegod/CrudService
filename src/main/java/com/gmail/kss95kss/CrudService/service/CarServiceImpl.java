@@ -32,9 +32,10 @@ public class CarServiceImpl implements CarService {
 
     private final CarMapper carMapper;
 
-    private static final int carInCompany = 10;
+    private static final int carInCompany = 11;
 
     private final PageSettings pageSettings = new PageSettings();
+    
 
 
     @Override
@@ -88,10 +89,8 @@ public class CarServiceImpl implements CarService {
     @Override
     public void addNewCar(Car car) {
         LOG.info("Operation: addNewCar: New Car params :{}", car);
-        // var allCars = carRepository.findAll();
-        //boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
-        boolean mutch = carRepository.existsByVin(car.getVin());
-        if (!mutch) {
+        boolean match = carRepository.existsByVin(car.getVin());
+        if (!match) {
             carRepository.save(car);
             LOG.info("Car {} was saved ", car);
         } else {
@@ -107,8 +106,7 @@ public class CarServiceImpl implements CarService {
             actual.setId(id);
             // var allCars = carRepository.findAll();
             // boolean mutch = allCars.stream().anyMatch(c -> c.getVin().equals(car.getVin()));
-            boolean mutch = carRepository.existsByVin(car.getVin());
-            if (!mutch) {
+            if (!carRepository.existsByVin(car.getVin())) {
                 carRepository.save(carMapper.toCarEntity(actual));
                 LOG.info("Car with id:{} was updated with params {}", id, car);
                 return actual;
@@ -131,7 +129,7 @@ public class CarServiceImpl implements CarService {
             }
             var company = companyRepository.findCompanyByName(companyName);
             if (company != null) {
-                if (checkCompanyCars((List<Car>) carRepository.findByCompanyEntityName(companyName, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage())))) {
+                if (checkCompanyCars(carRepository.findByCompanyEntityName(companyName, PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage())).getContent())) {
                     car.setCompanyEntity(company);
                     carRepository.save(car);
                 } else

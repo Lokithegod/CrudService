@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Timer;
 
 @RestController
 @RequestMapping("/api")
@@ -34,12 +33,12 @@ public class CrudServiceController {
 
 
     @GetMapping("/cars")
-    public ResponseEntity getAllCars(@RequestParam(value = "page") int page,
-                                     @RequestParam(value = "elementPerPage") int elementPerPage,
+    public ResponseEntity getAllCars(@RequestParam(value = "page") Integer page,
+                                     @RequestParam(value = "elementPerPage") Integer elementPerPage,
                                      @RequestParam(required = false, value = "name") CarName name,
-                                     @RequestParam(required = false, value = "year", defaultValue = "2025") int year,
+                                     @RequestParam(required = false, value = "year", defaultValue = "2025") Integer year,
                                      @RequestParam(required = false, value = "model") String model,
-                                     @RequestParam(required = false, value = "price", defaultValue = "999999999") int price,
+                                     @RequestParam(required = false, value = "price", defaultValue = "999999999") Integer price,
                                      @RequestParam(required = false, value = "company") String companyName) {
         var startTimer = System.nanoTime();
         LOG.info("Operation: search");
@@ -48,42 +47,40 @@ public class CrudServiceController {
         var carsPage = pageDtoMapper.pageToPageDto(carSearchService.findCarsByCriteria(name, year, price, model, companyName, pageSettings));
         LOG.info("Request for car page received with data : " + pageSettings);
         var endTimer = System.nanoTime();
-        var operationTime = (endTimer-startTimer)/1000000;
-        LOG.info("OPERATION TIME: {} millisecond",operationTime);
+        var operationTime = (endTimer - startTimer) / 1000000;
+        LOG.info("OPERATION TIME: {} millisecond", operationTime);
         return ResponseEntity.ok().body(carsPage);
     }
 
-
-/*    @GetMapping("/cars?year=")
-    public ResponseEntity<List<CarDto> getAllCarsByYear(@RequestParam int year) {
-        return ResponseEntity.ok(carMapper.toListCarDto((carService.findCarsByYear(year))));
-    }
-
-    @GetMapping("/cars?company=")
-    public ResponseEntity<Page<CarDto>> getAllCarsInCompany(@RequestParam String company) {
-        return ResponseEntity.ok(carMapper.toListCarDto(carService.findCarsByCompanyName(company)));
-    }*/
 
     @PostMapping("/cars")
     public ResponseEntity<?> saveCar(@Valid @RequestBody CarDto car) {
         var startTimer = System.nanoTime();
         carService.addNewCar(carMapper.toCarEntity(car));
         var endTimer = System.nanoTime();
-        var operationTime = (endTimer-startTimer)/1000000;
-        LOG.info("OPERATION TIME: {} millisecond",operationTime);
+        var operationTime = (endTimer - startTimer) / 1000000;
+        LOG.info("OPERATION TIME: {} millisecond", operationTime);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/cars/{id}")
-    public HttpStatus deleteCar(@PathVariable Integer id) {
+    @DeleteMapping("/cars")
+    public HttpStatus deleteCar(@RequestParam Integer id) {
+        var startTimer = System.nanoTime();
         var car = carService.findCarById(id);
         carService.deleteCarById(id);
+        var endTimer = System.nanoTime();
+        var operationTime = (endTimer - startTimer) / 1000000;
+        LOG.info("OPERATION TIME: {} millisecond", operationTime);
         return HttpStatus.NO_CONTENT;
     }
 
-    @PutMapping("/cars/{id}")
-    public HttpStatus updateCar(@PathVariable Integer id, @RequestBody CarDto car) {
+    @PutMapping("/cars")
+    public HttpStatus updateCar(@RequestParam Integer id, @RequestBody CarDto car) {
+        var startTimer = System.nanoTime();
         var updatedCar = carService.updateCar(id, car);
+        var endTimer = System.nanoTime();
+        var operationTime = (endTimer - startTimer) / 1000000;
+        LOG.info("OPERATION TIME: {} millisecond", operationTime);
         return HttpStatus.OK;
     }
 

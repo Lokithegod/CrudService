@@ -32,11 +32,10 @@ public class CrudServiceApiTest extends AbstractRestControllerTest {
     @Test
     @SneakyThrows
     void ifFindAllCarThenSuccess() {
-        var cars = TestData.getCars();
-        var response = objectMapper.writeValueAsString(carMapper.toListCarDto(cars));
-//        var response = objectMapper.writeValueAsString(cars);
-        when(carService.findAllCar(pageSettings)).thenReturn((Page<Car>) cars);
-        mockMvc.perform(get("/api/allCars")
+        var cars = TestData.getCarsPage();
+        var response = objectMapper.writeValueAsString(cars);
+        when(carSearchService.findCarsByCriteria(null,2016,30000,"",null,pageSettings)).thenReturn(cars);
+        mockMvc.perform(get("/api/cars?year=2016&price=30000")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
@@ -45,7 +44,7 @@ public class CrudServiceApiTest extends AbstractRestControllerTest {
  /*   @Test
     @SneakyThrows
     void ifFindCarByYearThenSuccess() {
-        var cars = TestData.getCars();
+        var cars = TestData.getCarsList();
         var year = 2016;
         var response = objectMapper.writeValueAsString(carMapper.toListCarDto((Page<Car>) cars));
         when(carService.findCarsByYear(year)).thenReturn((Page<Car>) cars);
@@ -58,7 +57,7 @@ public class CrudServiceApiTest extends AbstractRestControllerTest {
     @Test
     @SneakyThrows
     void ifFindCarByCompanyNameThenSuccess() {
-        var cars = TestData.getCars();
+        var cars = TestData.getCarsList();
         var companyName = "Baza";
         var response = objectMapper.writeValueAsString(carMapper.toListCarDto((Page<Car>) cars));
         when(carService.findCarsByCompanyName("Baza")).thenReturn((Page<Car>) cars);

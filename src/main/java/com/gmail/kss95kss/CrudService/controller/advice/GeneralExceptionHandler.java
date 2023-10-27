@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
@@ -45,46 +44,47 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleCompanyCarsIsFullException() {
         var errorMessage = "Company allready have 10 cars";
-        var errorCode= "40002";
+        var errorCode = "40002";
         LOG.warn(errorMessage);
-        return handleExceptionMessage(errorCode,errorMessage);
+        return handleExceptionMessage(errorCode, errorMessage);
     }
 
     @ExceptionHandler(value = {CarAlreadyInCompanyException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleCarAlreadyinCompanyException() {
         var errorMessage = "Company already have Car";
-        var errorCode= "40003";
+        var errorCode = "40003";
         LOG.warn(errorMessage);
-        return handleExceptionMessage(errorCode,errorMessage);
+        return handleExceptionMessage(errorCode, errorMessage);
     }
 
     @ExceptionHandler(value = {CarNotFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleCarNotFoundException() {
         var errorMessage = "Car not found";
-        var errorCode= "40004";
+        var errorCode = "40004";
         LOG.warn(errorMessage);
-        return handleExceptionMessage(errorCode,errorMessage);
+        return handleExceptionMessage(errorCode, errorMessage);
     }
 
     @ExceptionHandler(value = {IncorrectVinCodeException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleIncorrectVinCodeException(IncorrectVinCodeException e) {
-        var errorMessage =e.getMessage();
-        var errorCode= "40004";
+        var errorMessage = e.getMessage();
+        var errorCode = "40004";
         LOG.warn(errorMessage);
-        return handleExceptionMessage(errorCode,errorMessage);
+        return handleExceptionMessage(errorCode, errorMessage);
     }
 
     @ExceptionHandler(value = {CompanyNotFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleCompanyNotFoundException() {
         var errorMessage = "Company not found";
-        var errorCode= "40005";
+        var errorCode = "40005";
         LOG.warn(errorMessage);
-        return handleExceptionMessage(errorCode,errorMessage);
+        return handleExceptionMessage(errorCode, errorMessage);
     }
+
     private static ErrorResponse handleExceptionMessage(String exceptionMessage) {
         return handleExceptionMessage(DEFAULT_ERROR_CODE, exceptionMessage);
     }

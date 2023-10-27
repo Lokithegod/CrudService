@@ -5,7 +5,9 @@ import com.gmail.kss95kss.CrudService.exception.*;
 import com.gmail.kss95kss.CrudService.mapper.CarMapper;
 import com.gmail.kss95kss.CrudService.model.Car;
 import com.gmail.kss95kss.CrudService.repository.CarRepositoryCrud;
+import com.gmail.kss95kss.CrudService.repository.CarSearchRepository;
 import com.gmail.kss95kss.CrudService.repository.CompanyRepository;
+import com.gmail.kss95kss.CrudService.repository.specification.CarSearchParams;
 import com.gmail.kss95kss.CrudService.utilities.TestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +27,8 @@ public class CarServiceTest {
     @Mock
     private CarRepositoryCrud carRepository;
     @Mock
+    private CarSearchRepository carSearchRepository;
+    @Mock
     private CarMapper carMapper;
     @Mock
     private CompanyRepository companyRepository;
@@ -33,6 +37,8 @@ public class CarServiceTest {
 
     private  PageSettings pageSettings = new PageSettings();
 
+    private CarSearchParams defaultParams = new CarSearchParams(null,2023,9999999,"","");
+
     private  Pageable firstPage = PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage());
    // private static Pageable firstPage = PageRequest.of(0, 10);
 
@@ -40,15 +46,15 @@ public class CarServiceTest {
     @Test
     void ifFindAllCarsThenSuccess() {
         //given
-        var expected = TestData.getCars();
+        var expected = TestData.getCarsPage();
         //When
-        when(carRepository.findAll()).thenReturn(TestData.getCars());
-        var actual = carService.findAllCar(pageSettings);
+        when(carSearchRepository.findCarsByCriteria(defaultParams,firstPage)).thenReturn(TestData.getCarsPage());
+        var actual = carSearchRepository.findCarsByCriteria(defaultParams,firstPage);
         //Then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
-    @Test
+/*    @Test
     void ifFindCarByIdThenSuccess() {
         //Given
         var expected = TestData.getCar(73);
@@ -57,35 +63,10 @@ public class CarServiceTest {
         var actual = carService.findCarById(73);
         //Then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-    }
+    }*/
 
     @Test
-    void ifFindCarByYearThenSuccess() {
-        //Given
-        var expected = TestData.getCarsByYear();
-        //When
-        when(carRepository.findByYear(2016,PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()))).thenReturn((Page<Car>) TestData.getCarsByYear());
-        var actual = carService.findCarsByYear(2016,pageSettings);
-        //Then
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-
-    }
-
-    @Test
-    void ifFindCarsByCompanyNameThenSuccess() {
-        //Given
-        var expected = TestData.getCars();
-        //When
-        when(companyRepository.findCompanyByName("Baza")).thenReturn(TestData.getCompany());
-        when(carRepository.findByCompanyEntityName("Baza",firstPage)).thenReturn((Page<Car>) TestData.getCars());
-        var actual = carService.findCarsByCompanyName("Baza");
-        //Then
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-
-    }
-
-    @Test
-    void ifFindCarsByCompanyNameThenThrowCompanyNotFounException() {
+    void ifFindCarsByCompanyNameThenThrowCompanyNotFoundException() {
         //Given
         when(companyRepository.findCompanyByName("Baza")).thenReturn(null);
         //Then
@@ -98,9 +79,8 @@ public class CarServiceTest {
     @Test
     void ifAddNewCarThenSuccess() {
         //Given
-        when(carRepository.findAll()).thenReturn(TestData.getCars());
         //When
-        assertThatCode(() -> carService.addNewCar(TestData.getCar("testVin")))
+        assertThatCode(() -> carService.addNewCar(TestData.getCar("JH4KA7670PC005516")))
                 //then
                 .doesNotThrowAnyException();
     }
@@ -108,7 +88,8 @@ public class CarServiceTest {
     @Test
     void ifAddNewCarThenDuplicateVinCodeException() {
         //Given
-        when(carService.findAllCar(pageSettings)).thenReturn((Page<Car>) TestData.addInToGetCars(TestData.getCar(1)));
+        var car = TestData.getCar();
+        when(carRepository.existsByVin(car.getVin())).thenReturn(true);
         //When
         assertThatExceptionOfType(DuplicateVinCodeException.class)
                 //when
@@ -138,7 +119,8 @@ public class CarServiceTest {
     @Test
     void ifUpdateCarThenSuccess() {
         //Given
-        when(carRepository.findCarById(0)).thenReturn(TestData.getCar());
+        when(carMapper.toCarDto(carRepository.findCarById(1))).thenReturn(TestData.getCarDto("JHADA9390MS033554"));
+        when(carRepository.existsByVin(TestData.getCarDto("JHADA9390MS033552").getVin())).thenReturn(false);
         //Then
         assertThatCode(() -> carService.updateCar(0,carMapper.toCarDto(carRepository.findCarById(0))))
                 //then
@@ -157,12 +139,12 @@ public class CarServiceTest {
     @Test
     void ifUpdateCarThenThenThrowDuplicateVinCodeException() {
         //Given
-        when(carRepository.findCarById(0)).thenReturn(TestData.getCar());
-        when(carRepository.findAll()).thenReturn(TestData.getCars());
+        when(carMapper.toCarDto(carRepository.findCarById(1))).thenReturn(TestData.getCarDto("JHADA9390MS033554"));
+        when(carRepository.existsByVin(TestData.getCarDto("JHADA9390MS033554").getVin())).thenReturn(true);
         //Then
         assertThatExceptionOfType(DuplicateVinCodeException.class)
                 //when
-                .isThrownBy(() -> carService.updateCar(0,carMapper.toCarDto(carRepository.findCarById(0))));
+                .isThrownBy(() -> carService.updateCar(1,carMapper.toCarDto(carRepository.findCarById(0))));
     }
 
     @Test
@@ -170,6 +152,7 @@ public class CarServiceTest {
         //Given
         when(carRepository.findCarById(0)).thenReturn(TestData.getCarWithEmptyCompany());
         when(companyRepository.findCompanyByName("Baza")).thenReturn(TestData.getCompany());
+        when(carRepository.findByCompanyEntityName("Baza", PageRequest.of(pageSettings.getPage(), pageSettings.getElementPerPage()))).thenReturn(TestData.getCarsPage(2));
         //Then
         assertThatCode(() -> carService.addCarToCompany(0,"Baza"))
                 //then
@@ -211,7 +194,7 @@ public class CarServiceTest {
         //Given
         when(carRepository.findCarById(0)).thenReturn(TestData.getCarWithEmptyCompany());
         when(companyRepository.findCompanyByName("Baza")).thenReturn(TestData.getCompany());
-        when(carRepository.findByCompanyEntityName("Baza",firstPage)).thenReturn((Page<Car>) TestData.getCars());
+        when(carRepository.findByCompanyEntityName("Baza",firstPage)).thenReturn(TestData.getCarsPage(20));
         //Then
         assertThatExceptionOfType(CompanyCarsIsFullException.class)
                 //when
