@@ -1,8 +1,8 @@
-managment:
-  endpionts:
+management:
+  endpoints:
     web:
       exposure:
-        include: '*'
+        include: ["prometheus"]
   info:
     env:
       enabled: true
