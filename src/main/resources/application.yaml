@@ -1,8 +1,8 @@
-managment:
-  endpionts:
+management:
+  endpoints:
     web:
       exposure:
-        include: '*'
+        include: ["prometheus"]
   info:
     env:
       enabled: true
@@ -21,6 +21,12 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-
-
+logging:
+  log4j2:
+    logger:
+      org:
+        hibername: info
+    config:
+      override:
+debug: true
 # Hibernate ddl auto (create, create-drop, validate, update)

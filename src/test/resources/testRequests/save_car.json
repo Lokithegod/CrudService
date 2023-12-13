@@ -1,0 +1,12 @@
+{
+  "name": "BMW",
+  "type": "SEDAN",
+  "model": "M5",
+  "year": 2011,
+  "mileage": 351,
+  "price": 14345,
+  "equipment": "SEL",
+  "about": "Trash",
+  "rating": 3.9,
+  "vin_code": "1G1ZT51816F264063"
+}
